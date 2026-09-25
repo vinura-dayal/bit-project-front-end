@@ -35,9 +35,9 @@ export class AgentComponent {
 
   ngOnInit(): void {
     this.isEditAgent = false;
-    this.canCreate = this.permissionHelper.has(AuthIds.STUDENT_CREATE);
-    this.canUpdate = this.permissionHelper.has(AuthIds.STUDENT_UPDATE);
-    this.canDelete = this.permissionHelper.has(AuthIds.STUDENT_DELETE);
+    this.canCreate = this.permissionHelper.has(AuthIds.AGENT_CREATE);
+    this.canUpdate = this.permissionHelper.has(AuthIds.AGENT_UPDATE);
+    this.canDelete = this.permissionHelper.has(AuthIds.AGENT_DELETE);
     this.GetAllStatus();
     this.GetAllAgents();
 }
