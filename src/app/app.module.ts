@@ -20,6 +20,7 @@ import { RegisterComponent } from './component/register/register.component';
 import { PrivilegeComponent } from './component/privilege/privilege.component';
 import { QualificationComponent } from './component/qualification/qualification.component';
 import { AgentComponent } from './component/agent/agent.component';
+import { LandlordComponent } from './component/landlord/landlord.component';
 
 
 
@@ -36,7 +37,8 @@ import { AgentComponent } from './component/agent/agent.component';
     RegisterComponent,
     PrivilegeComponent,
     QualificationComponent,
-    AgentComponent
+    AgentComponent,
+    LandlordComponent
   ],
   imports: [
     BrowserModule,

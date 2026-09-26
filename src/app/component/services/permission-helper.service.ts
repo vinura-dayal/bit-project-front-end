@@ -31,6 +31,12 @@ export const AuthIds = {
   AGENT_UPDATE: 42,
   AGENT_DELETE: 43,
 
+//Landlord module
+  LANDLORD_VIEW: 50,
+  LANDLORD_CREATE: 51,
+  LANDLORD_UPDATE: 52,
+  LANDLORD_DELETE: 53,
+
 } as const;
 
 @Injectable({ providedIn: 'root' })
