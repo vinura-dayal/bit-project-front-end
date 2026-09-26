@@ -37,6 +37,12 @@ export const AuthIds = {
   LANDLORD_UPDATE: 52,
   LANDLORD_DELETE: 53,
 
+//Tenant module
+  TENANT_VIEW: 60,
+  TENANT_CREATE: 61,
+  TENANT_UPDATE: 62,
+  TENANT_DELETE: 63,
+
 } as const;
 
 @Injectable({ providedIn: 'root' })
