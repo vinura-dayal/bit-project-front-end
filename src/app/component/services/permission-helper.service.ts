@@ -49,6 +49,12 @@ export const AuthIds = {
   PROPERTY_UPDATE: 72,
   PROPERTY_DELETE: 73,
 
+// Lease Agreement module
+  LEASE_AGREEMENT_VIEW: 80,
+  LEASE_AGREEMENT_CREATE: 81,
+  LEASE_AGREEMENT_UPDATE: 82,
+  LEASE_AGREEMENT_DELETE: 83,
+
 
 } as const;
 
