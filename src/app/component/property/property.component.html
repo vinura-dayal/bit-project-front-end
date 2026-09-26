@@ -1,0 +1,159 @@
+
+    <main class="mt-5 pt-3">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-12 fw-bold fs-3">
+            PROPERTY REGISTRATION
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 mb-3">
+            <div class="card text-dark mb-3 h-100">
+              <div class="card-header bg-info fw-bold">Property Form</div>
+              <div class="card-body">
+                <form (ngSubmit)="SaveProperty()">
+
+                  <div class="form-group">
+                    <label for="propertyCode">Property Code <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyCode" name="propertyCode"
+                    [(ngModel)]="propertyObj.propertyCode"  required  placeholder="Enter Property Code">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyTitle">Property Title <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyTitle" name="propertyTitle"
+                    [(ngModel)]="propertyObj.propertyTitle"  required  placeholder="Enter Property Title">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyAddress">Address <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyAddress" name="propertyAddress"
+                    [(ngModel)]="propertyObj.address"  required  placeholder="Enter Property Address">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="propertyCity">City <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyCity" name="propertyCity"
+                    [(ngModel)]="propertyObj.city"  required  placeholder="Enter Property City">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyBedRooms">Bed Rooms <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyBedRooms" name="propertyBedRooms"
+                    [(ngModel)]="propertyObj.bedrooms"  required  placeholder="Enter Property BedRooms">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyBathRooms">Bath Rooms <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyBathRooms" name="propertyBathRooms"
+                    [(ngModel)]="propertyObj.bathrooms"  required  placeholder="Enter Property BathRooms">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyFloorArea">Floor Area SQFT <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyFloorArea" name="propertyFloorArea"
+                    [(ngModel)]="propertyObj.floorAreaSqft"  required  placeholder="Enter Property FloorArea">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyMonthlyRent">Monthly Rent <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyMonthlyRent" name="propertyMonthlyRent"
+                    [(ngModel)]="propertyObj.monthlyRent"  required  placeholder="Enter Property MonthlyRent">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertySecurityDeposit">Security Deposit <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertySecurityDeposit" name="propertySecurityDeposit"
+                    [(ngModel)]="propertyObj.securityDeposit"  required  placeholder="Enter Property SecurityDeposit">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="propertyDescription">Description <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyDescription" name="propertyDescription"
+                    [(ngModel)]="propertyObj.description"  required  placeholder="Enter Property Description">
+                  </div>              
+                  
+                  <div class="form-group mt-1">
+                      <label for="propertyStatus">Property Status <span>*</span></label>
+                      <select class="form-control form-select mt-2" id="propertyStatus" name="propertyStatus" aria-label="Default select example"
+                      (change)="onChangeStatus($event)" required>
+                      <option disabled selected>{{isEditProperty === true ? statusValue : "Select Value"}}</option>
+                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
+                      </select>
+                  </div>
+                  
+                      <div class="form-group mt-4" *ngIf="canCreate || (isEditProperty && canUpdate)">
+                      <div class="text-end ms-auto">
+                        <button class="btn btn-primary"> {{isEditProperty == false ? "submit" : "update"}}</button>
+                      </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-12 mb-3">
+            <div class="card text-dark  mb-3 h-100">
+              <div class="card-header bg-info fw-bold">Property Table</div>
+              <div class="card-body overflow-auto">
+                <div class="input-group my-3 ">
+                  <input type="text" class="form-control" placeholder="Serach Property" aria-label="Search" aria-describedby="button-addon2">
+                  <button class="btn btn-info" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                </div>
+                <table class="table table-striped table-bordered table-wrapper">
+                  <thead>
+                    <tr>
+                      <th scope="col">Property Code</th>
+                      <th scope="col">Property Title</th>
+                      <th scope="col">Property Address</th>
+                      <th scope="col">Property City</th>
+                      <th scope="col">Property Bed Rooms</th>
+                      <th scope="col">Property Bath Rooms</th>
+                      <th scope="col">Property Floor Area SQFT</th>
+                      <th scope="col">Property Monthly Rent</th>
+                      <th scope="col">Property Security Deposit</th>
+                      <th scope="col">Property Description</th>
+                      <th scope="col">Property Status</th>
+                      <th scope="col">Modify</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let propertyObj of propertys">
+                      <td>{{propertyObj.propertyCode || propertyObj.id}}</td>
+                      <td>{{propertyObj.propertyCode}}</td>
+                      <td>{{propertyObj.propertyTitle}}</td>
+                      <td>{{propertyObj.address}}</td>
+                      <td>{{propertyObj.city}}</td>
+                      <td>{{propertyObj.bedrooms}}</td>
+                      <td>{{propertyObj.bathrooms}}</td>
+                      <td>{{propertyObj.floorAreraSqft}}</td>
+                      <td>{{propertyObj.securityDeposit}}</td>
+                      <td>{{propertyObj.description}}</td>
+                      <td>{{propertyObj.status?.name}}</td>
+                      <td class="text-center">
+                        <button class="btn btn-warning me-1" *ngIf="canUpdate"
+                                (click)="GetPropertyById(propertyObj.id)"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-danger me-1" *ngIf="canDelete"
+                                (click)="DeleteById(propertyObj.id)"><i class="bi bi-archive"></i></button>
+                      </td>
+                        
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div> 
+
+         
+        </div>
+
+      </div>
+    </main>
+
+
