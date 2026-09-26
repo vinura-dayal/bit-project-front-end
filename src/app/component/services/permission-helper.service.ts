@@ -43,6 +43,13 @@ export const AuthIds = {
   TENANT_UPDATE: 62,
   TENANT_DELETE: 63,
 
+//Property module
+  PROPERTY_VIEW: 70,  
+  PROPERTY_CREATE: 71,
+  PROPERTY_UPDATE: 72,
+  PROPERTY_DELETE: 73,
+
+
 } as const;
 
 @Injectable({ providedIn: 'root' })
