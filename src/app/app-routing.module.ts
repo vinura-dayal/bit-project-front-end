@@ -13,6 +13,7 @@ import { PrivilegeComponent } from './component/privilege/privilege.component';
 import { QualificationComponent } from './component/qualification/qualification.component';
 import { AgentComponent } from './component/agent/agent.component';
 import { LandlordComponent } from './component/landlord/landlord.component';
+import { TenantComponent } from './component/tenant/tenant.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'privilege', component: PrivilegeComponent, canActivate: [AuthGuard] },
   { path: 'agent', component: AgentComponent, canActivate: [AuthGuard] },
   { path: 'landlord', component: LandlordComponent, canActivate: [AuthGuard] },
+  { path: 'tenant', component: TenantComponent, canActivate: [AuthGuard]},
   
   
   { path: '**', redirectTo: 'login' }

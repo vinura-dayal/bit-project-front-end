@@ -21,6 +21,7 @@ import { PrivilegeComponent } from './component/privilege/privilege.component';
 import { QualificationComponent } from './component/qualification/qualification.component';
 import { AgentComponent } from './component/agent/agent.component';
 import { LandlordComponent } from './component/landlord/landlord.component';
+import { TenantComponent } from './component/tenant/tenant.component';
 
 
 
@@ -38,7 +39,8 @@ import { LandlordComponent } from './component/landlord/landlord.component';
     PrivilegeComponent,
     QualificationComponent,
     AgentComponent,
-    LandlordComponent
+    LandlordComponent,
+    TenantComponent
   ],
   imports: [
     BrowserModule,
