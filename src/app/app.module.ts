@@ -23,6 +23,7 @@ import { AgentComponent } from './component/agent/agent.component';
 import { LandlordComponent } from './component/landlord/landlord.component';
 import { TenantComponent } from './component/tenant/tenant.component';
 import { PropertyComponent } from './component/property/property.component';
+import { LeaseAgreementComponent } from './component/lease-agreement/lease-agreement.component';
 
 
 
@@ -42,7 +43,8 @@ import { PropertyComponent } from './component/property/property.component';
     AgentComponent,
     LandlordComponent,
     TenantComponent,
-    PropertyComponent
+    PropertyComponent,
+    LeaseAgreementComponent
   ],
   imports: [
     BrowserModule,
