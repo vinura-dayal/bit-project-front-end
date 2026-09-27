@@ -26,10 +26,10 @@ export const AuthIds = {
   TEACHER_DELETE: 33,
 
 //Agent module
-  AGENT_VIEW: 40,
-  AGENT_CREATE: 41,
-  AGENT_UPDATE: 42,
-  AGENT_DELETE: 43,
+  AGENT_VIEW: 1,
+  AGENT_CREATE: 2,
+  AGENT_UPDATE: 3,
+  AGENT_DELETE: 4,
 
 //Landlord module
   LANDLORD_VIEW: 50,
