@@ -16,6 +16,7 @@ import { LandlordComponent } from './component/landlord/landlord.component';
 import { TenantComponent } from './component/tenant/tenant.component';
 import { PropertyComponent } from './component/property/property.component';
 import { LeaseAgreementComponent } from './component/lease-agreement/lease-agreement.component';
+import { RentComponent } from './component/rent/rent.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'tenant', component: TenantComponent, canActivate: [AuthGuard]},
   { path: 'property', component: PropertyComponent, canActivate: [AuthGuard]},
   { path: 'lease-agreement', component: LeaseAgreementComponent, canActivate: [AuthGuard]},
+  { path: 'rent-payment', component: RentComponent, canActivate: [AuthGuard]},
   
   { path: '**', redirectTo: 'login' }
 ];
