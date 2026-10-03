@@ -24,7 +24,7 @@ import { LandlordComponent } from './component/landlord/landlord.component';
 import { TenantComponent } from './component/tenant/tenant.component';
 import { PropertyComponent } from './component/property/property.component';
 import { LeaseAgreementComponent } from './component/lease-agreement/lease-agreement.component';
-
+import { RentComponent } from './component/rent/rent.component';
 
 
 @NgModule({
@@ -44,7 +44,8 @@ import { LeaseAgreementComponent } from './component/lease-agreement/lease-agree
     LandlordComponent,
     TenantComponent,
     PropertyComponent,
-    LeaseAgreementComponent
+    LeaseAgreementComponent,
+    RentComponent
   ],
   imports: [
     BrowserModule,
