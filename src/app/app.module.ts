@@ -25,6 +25,7 @@ import { TenantComponent } from './component/tenant/tenant.component';
 import { PropertyComponent } from './component/property/property.component';
 import { LeaseAgreementComponent } from './component/lease-agreement/lease-agreement.component';
 import { RentComponent } from './component/rent/rent.component';
+import { MaintenanceRequestComponent } from './component/maintenance-request/maintenance-request.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { RentComponent } from './component/rent/rent.component';
     TenantComponent,
     PropertyComponent,
     LeaseAgreementComponent,
-    RentComponent
+    RentComponent,
+    MaintenanceRequestComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import { RentComponent } from './component/rent/rent.component';
     FormsModule,
     NgbModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ],
   providers: [
     AuthGuard,
