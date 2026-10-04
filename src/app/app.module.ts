@@ -26,6 +26,7 @@ import { PropertyComponent } from './component/property/property.component';
 import { LeaseAgreementComponent } from './component/lease-agreement/lease-agreement.component';
 import { RentComponent } from './component/rent/rent.component';
 import { MaintenanceRequestComponent } from './component/maintenance-request/maintenance-request.component';
+import { PropertyInspectionComponent } from './component/property-inspection/property-inspection.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { MaintenanceRequestComponent } from './component/maintenance-request/mai
     PropertyComponent,
     LeaseAgreementComponent,
     RentComponent,
-    MaintenanceRequestComponent
+    MaintenanceRequestComponent,
+    PropertyInspectionComponent
   ],
   imports: [
     BrowserModule,
