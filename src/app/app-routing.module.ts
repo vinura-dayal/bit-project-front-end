@@ -19,6 +19,7 @@ import { LeaseAgreementComponent } from './component/lease-agreement/lease-agree
 import { RentComponent } from './component/rent/rent.component';
 import { MaintenanceRequestComponent } from './component/maintenance-request/maintenance-request.component';
 import { PropertyInspectionComponent } from './component/property-inspection/property-inspection.component';
+import { UtilityBillComponent } from './component/utility-bill/utility-bill.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'rent-payment', component: RentComponent, canActivate: [AuthGuard]},
   { path: 'maintenance-request', component: MaintenanceRequestComponent, canActivate: [AuthGuard] },
   { path: 'property-inspection', component: PropertyInspectionComponent, canActivate: [AuthGuard]},
+  { path: 'utility-bill', component: UtilityBillComponent, canActivate: [AuthGuard]},
   
   { path: '**', redirectTo: 'login' }
 ];
