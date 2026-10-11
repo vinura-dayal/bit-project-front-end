@@ -14,11 +14,11 @@ export class PropertyInspectionService {
     private http:HttpClient
   ) { }
 
-  createPropertyInspection(maintenanceRequest:any,type:any):Observable<any>{
+  createPropertyInspection(propertyInspection:any,type:any):Observable<any>{
       if(type=='Add'){
-        return this.http.post(this.baseUrl,maintenanceRequest);
+        return this.http.post(this.baseUrl,propertyInspection);
       }else{
-        return this.http.put(this.baseUrl+"/"+maintenanceRequest.id,maintenanceRequest);
+        return this.http.put(this.baseUrl+"/"+propertyInspection.id,propertyInspection);
     }
         
   }
