@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MaintenanceRequestRepresentation } from '../services/api/module/maintenance-request-representation';
 import { MaintenanceRequestService } from '../services/api/maintenance-request/maintenance-request.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-maintenanceRequest',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./maintenance-request.component.scss']
 })
 export class MaintenanceRequestComponent {
+
+  @ViewChild('maintenanceRequestModal') maintenanceRequestModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   maintenanceRequestObj:MaintenanceRequestRepresentation = {};
   maintenanceRequests: Array<any> = [];
@@ -30,7 +35,9 @@ export class MaintenanceRequestComponent {
     private maintenanceRequestService:MaintenanceRequestService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveMaintenanceRequest():void{
           this.maintenanceRequestService.createMaintenanceRequest(this.maintenanceRequestObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllMaintenanceRequests();  
             }
           });
@@ -71,6 +79,7 @@ SaveMaintenanceRequest():void{
       this.maintenanceRequestService.createMaintenanceRequest(this.maintenanceRequestObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllMaintenanceRequests();  
             }
           });
@@ -89,6 +98,7 @@ GetMaintenanceRequestById(ID:any){
   this.isEditMaintenanceRequest = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.maintenanceRequestObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.maintenanceRequestModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.maintenanceRequestObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.maintenanceRequestObj = {};
+  this.isEditMaintenanceRequest = false;
+  this.modalRef = this.modalService.open(this.maintenanceRequestModal, { centered: true, backdrop: 'static' });
 }
 
 }
