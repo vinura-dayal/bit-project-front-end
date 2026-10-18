@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { UtilityBillRepresentation } from '../services/api/module/utility-bill-representation';
 import { UtilityBillService } from '../services/api/utility-bill/utility-bill.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-utilityBill',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./utility-bill.component.scss']
 })
 export class UtilityBillComponent {
+
+  @ViewChild('utilityBillModal') utilityBillModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   utilityBillObj:UtilityBillRepresentation = {};
   utilityBills: Array<any> = [];
@@ -30,7 +35,9 @@ export class UtilityBillComponent {
     private utilityBillService:UtilityBillService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveUtilityBill():void{
           this.utilityBillService.createUtilityBill(this.utilityBillObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllUtilityBills();  
             }
           });
@@ -71,6 +79,7 @@ SaveUtilityBill():void{
       this.utilityBillService.createUtilityBill(this.utilityBillObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllUtilityBills();  
             }
           });
@@ -89,6 +98,7 @@ GetUtilityBillById(ID:any){
   this.isEditUtilityBill = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.utilityBillObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.utilityBillModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.utilityBillObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.utilityBillObj = {};
+  this.isEditUtilityBill = false;
+  this.modalRef = this.modalService.open(this.utilityBillModal, { centered: true, backdrop: 'static' });
 }
 
 }
