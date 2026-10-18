@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { RentRepresentation } from '../services/api/module/rent-representation';
 import { RentService } from '../services/api/rent/rent.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-rent',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./rent.component.scss']
 })
 export class RentComponent {
+
+  @ViewChild('rentModal') rentModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   rentObj:RentRepresentation = {};
   rents: Array<any> = [];
@@ -30,7 +35,9 @@ export class RentComponent {
     private rentService:RentService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveRent():void{
           this.rentService.createRent(this.rentObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllRents();  
             }
           });
@@ -71,6 +79,7 @@ SaveRent():void{
       this.rentService.createRent(this.rentObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllRents();  
             }
           });
@@ -89,6 +98,7 @@ GetRentById(ID:any){
   this.isEditRent = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.rentObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.rentModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.rentObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.rentObj = {};
+  this.isEditRent = false;
+  this.modalRef = this.modalService.open(this.rentModal, { centered: true, backdrop: 'static' });
 }
 
 }

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { PropertyInspectionRepresentation } from '../services/api/module/property-inspection-representation';
 import { PropertyInspectionService } from '../services/api/property-inspection/property-inspection.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-propertyInspection',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./property-inspection.component.scss']
 })
 export class PropertyInspectionComponent {
+
+  @ViewChild('propertyInspectionModal') propertyInspectionModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   propertyInspectionObj:PropertyInspectionRepresentation = {};
   propertyInspections: Array<any> = [];
@@ -30,7 +35,9 @@ export class PropertyInspectionComponent {
     private propertyInspectionService:PropertyInspectionService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SavePropertyInspection():void{
           this.propertyInspectionService.createPropertyInspection(this.propertyInspectionObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllPropertyInspections();  
             }
           });
@@ -71,6 +79,7 @@ SavePropertyInspection():void{
       this.propertyInspectionService.createPropertyInspection(this.propertyInspectionObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllPropertyInspections();  
             }
           });
@@ -89,6 +98,7 @@ GetPropertyInspectionById(ID:any){
   this.isEditPropertyInspection = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.propertyInspectionObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.propertyInspectionModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.propertyInspectionObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.propertyInspectionObj = {};
+  this.isEditPropertyInspection = false;
+  this.modalRef = this.modalService.open(this.propertyInspectionModal, { centered: true, backdrop: 'static' });
 }
 
 }
