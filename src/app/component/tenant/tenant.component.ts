@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { TenantRepresentation } from '../services/api/module/tenant-representation';
 import { TenantService } from '../services/api/tenant/tenant.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-tenant',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./tenant.component.scss']
 })
 export class TenantComponent {
+
+  @ViewChild('tenantModal') tenantModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   tenantObj:TenantRepresentation = {};
   tenants: Array<any> = [];
@@ -30,7 +35,9 @@ export class TenantComponent {
     private tenantService:TenantService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveTenant():void{
           this.tenantService.createTenant(this.tenantObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllTenants();  
             }
           });
@@ -71,6 +79,7 @@ SaveTenant():void{
       this.tenantService.createTenant(this.tenantObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllTenants();  
             }
           });
@@ -89,6 +98,7 @@ GetTenantById(ID:any){
   this.isEditTenant = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.tenantObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.tenantModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.tenantObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.tenantObj = {};
+  this.isEditTenant = false;
+  this.modalRef = this.modalService.open(this.tenantModal, { centered: true, backdrop: 'static' });
 }
 
 }
