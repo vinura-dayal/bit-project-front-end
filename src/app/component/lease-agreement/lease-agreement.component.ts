@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { LeaseAgreementRepresentation } from '../services/api/module/lease-agreement-representation';
 import { LeaseAgreementService } from '../services/api/lease-agreement/lease-agreement.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-leaseagreement',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./lease-agreement.component.scss']
 })
 export class LeaseAgreementComponent {
+
+  @ViewChild('leaseAgreementModal') leaseAgreementModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   leaseagreementObj:LeaseAgreementRepresentation = {};
   leaseagreements: Array<any> = [];
@@ -30,7 +35,9 @@ export class LeaseAgreementComponent {
     private leaseagreementService:LeaseAgreementService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveLeaseAgreement():void{
           this.leaseagreementService.createLeaseAgreement(this.leaseagreementObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllLeaseAgreements();  
             }
           });
@@ -71,6 +79,7 @@ SaveLeaseAgreement():void{
       this.leaseagreementService.createLeaseAgreement(this.leaseagreementObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllLeaseAgreements();  
             }
           });
@@ -89,6 +98,7 @@ GetLeaseAgreementById(ID:any){
   this.isEditLeaseAgreement = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.leaseagreementObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.leaseAgreementModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.leaseagreementObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.leaseagreementObj = {};
+  this.isEditLeaseAgreement = false;
+  this.modalRef = this.modalService.open(this.leaseAgreementModal, { centered: true, backdrop: 'static' });
 }
 
 }

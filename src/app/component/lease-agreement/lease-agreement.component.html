@@ -2,17 +2,76 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12 fw-bold fs-3">
-            LEASE AGREEMENT
-          </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-bold fs-3">LEASE AGREEMENTS</div>
+          <button type="button" class="btn btn-primary" *ngIf="canCreate" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Add Lease Agreement
+          </button>
         </div>
 
         <div class="row">
+
           <div class="col-lg-12 mb-3">
-            <div class="card text-dark mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Lease Agreement Form</div>
-              <div class="card-body">
+            <div class="card text-dark  mb-3 h-100">
+              <div class="card-header bg-info fw-bold">Lease AgreementTable</div>
+              <div class="card-body overflow-auto">
+                <div class="input-group my-3 ">
+                  <input type="text" class="form-control" placeholder="Serach LeaseAgreement" aria-label="Search" aria-describedby="button-addon2">
+                  <button class="btn btn-info" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                </div>
+                <table class="table table-striped table-bordered table-wrapper">
+                  <thead>
+                    <tr>
+                      <th scope="col">Lease Lease Code</th>
+                      <th scope="col">Lease Agreement Start Date</th>
+                      <th scope="col">Lease Agreement End Date</th>
+                      <th scope="col">Lease Agreement Monthly Rent</th>
+                      <th scope="col">Lease Agreement Security Deposit</th>
+                      <th scope="col">Lease Agreement terms</th>
+                      <th scope="col">Lease Lease Signed Date</th>
+                      <th scope="col">Lease AgreementStatus</th>
+                      <th scope="col">Modify</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let leasgeagreementObj of leaseagreements">
+                      <td>{{leasgeagreementObj.leaseCode || leasgeagreementObj.id}}</td>
+                      <td>{{leasgeagreementObj.leasetCode}}</td>
+                      <td>{{leasgeagreementObj.startDate}}</td>
+                      <td>{{leasgeagreementObj.endDate}}</td>
+                      <td>{{leasgeagreementObj.monthlyRent}}</td>
+                      <td>{{leasgeagreementObj.securityDeposit}}</td>
+                      <td>{{leasgeagreementObj.terms}}</td>
+                      <td>{{leasgeagreementObj.signedDate}}</td>
+                      <td>{{leasgeagreementObj.status?.name}}</td>
+                      <td class="text-center">
+                        <button class="btn btn-warning me-1" *ngIf="canUpdate"
+                                (click)="GetLeaseAgreementById(leaseagreementObj.id)"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-danger me-1" *ngIf="canDelete"
+                                (click)="DeleteById(leaseagreementObj.id)"><i class="bi bi-archive"></i></button>
+                      </td>
+                        
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div> 
+
+         
+        </div>
+
+      </div>
+    </main>
+
+
+
+<ng-template #leaseAgreementModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEditLeaseAgreement ? 'Edit Lease Agreement' : 'Add Lease Agreement' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
                 <form (ngSubmit)="SaveLeaseAgreement()">
 
                   <div class="form-group">
@@ -74,64 +133,5 @@
                   </div>
 
                 </form>
-              </div>
-            </div>
-          </div> 
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-12 mb-3">
-            <div class="card text-dark  mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Lease AgreementTable</div>
-              <div class="card-body overflow-auto">
-                <div class="input-group my-3 ">
-                  <input type="text" class="form-control" placeholder="Serach LeaseAgreement" aria-label="Search" aria-describedby="button-addon2">
-                  <button class="btn btn-info" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-                </div>
-                <table class="table table-striped table-bordered table-wrapper">
-                  <thead>
-                    <tr>
-                      <th scope="col">Lease Lease Code</th>
-                      <th scope="col">Lease Agreement Start Date</th>
-                      <th scope="col">Lease Agreement End Date</th>
-                      <th scope="col">Lease Agreement Monthly Rent</th>
-                      <th scope="col">Lease Agreement Security Deposit</th>
-                      <th scope="col">Lease Agreement terms</th>
-                      <th scope="col">Lease Lease Signed Date</th>
-                      <th scope="col">Lease AgreementStatus</th>
-                      <th scope="col">Modify</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let leasgeagreementObj of leaseagreements">
-                      <td>{{leasgeagreementObj.leaseCode || leasgeagreementObj.id}}</td>
-                      <td>{{leasgeagreementObj.leasetCode}}</td>
-                      <td>{{leasgeagreementObj.startDate}}</td>
-                      <td>{{leasgeagreementObj.endDate}}</td>
-                      <td>{{leasgeagreementObj.monthlyRent}}</td>
-                      <td>{{leasgeagreementObj.securityDeposit}}</td>
-                      <td>{{leasgeagreementObj.terms}}</td>
-                      <td>{{leasgeagreementObj.signedDate}}</td>
-                      <td>{{leasgeagreementObj.status?.name}}</td>
-                      <td class="text-center">
-                        <button class="btn btn-warning me-1" *ngIf="canUpdate"
-                                (click)="GetLeaseAgreementById(leaseagreementObj.id)"><i class="bi bi-pencil-square"></i></button>
-                        <button class="btn btn-danger me-1" *ngIf="canDelete"
-                                (click)="DeleteById(leaseagreementObj.id)"><i class="bi bi-archive"></i></button>
-                      </td>
-                        
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div> 
-
-         
-        </div>
-
-      </div>
-    </main>
-
-
+  </div>
+</ng-template>
