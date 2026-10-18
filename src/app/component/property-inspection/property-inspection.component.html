@@ -2,75 +2,11 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12 fw-bold fs-3">
-            Property Inspection 
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 mb-3">
-            <div class="card text-dark mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Property Inspection Form</div>
-              <div class="card-body">
-                <form (ngSubmit)="SavePropertyInspection()">
-
-                  <div class="form-group">
-                    <label for="inspectionCode">Property Inspection Code <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="propertyInspectionCode" name="propertyInspectionCode"
-                    [(ngModel)]="propertyInspectionObj.inspectionCode"  required  placeholder="Enter Property Inspection Code">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inspectionDate">Inspection Date <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="inspectionDate" name="inspectionDate"
-                    [(ngModel)]="propertyInspectionObj.inspectionDate"  required  placeholder="Enter Inspection Date">
-                  </div>
-
-
-                  <div class="form-group">
-                    <label for="inspectionType">Inspection Type<span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="inspectionType" name="inspectionType"
-                    [(ngModel)]="propertyInspectionObj.inspectionType"  required  placeholder="Enter Property Inspection Inspection Type">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="conditionNotes">Condition Notes <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="conditionNotes" name="conditionNotes"
-                    [(ngModel)]="propertyInspectionObj.conditionNotes"  required  placeholder="Enter Maintenance Condition Notes">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="damageReported">Damage Reported <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="damageReported" name="damageReported"
-                    [(ngModel)]="propertyInspectionObj.damageReported"  required  placeholder="Enter Property Inspection Damage Reported">
-                  </div>       
-                  
-                  <div class="form-group">
-                    <label for="photosURL"> Photos URL <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="photosURL" name="photosURL"
-                    [(ngModel)]="propertyInspectionObj.photosURL" required  placeholder="Enter Property Inspection Photos URL">
-                  </div>              
-                  
-                  <div class="form-group mt-1">
-                      <label for="stauts">Status <span>*</span></label>
-                      <select class="form-control form-select mt-2" id="stauts" name="stauts" aria-label="Default select example"
-                      (change)="onChangeStatus($event)" required>
-                      <option disabled selected>{{isEditPropertyInspection=== true ? statusValue : "Select Value"}}</option>
-                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
-                      </select>
-                  </div>
-                  
-                      <div class="form-group mt-4" *ngIf="canCreate || (isEditPropertyInspection && canUpdate)">
-                      <div class="text-end ms-auto">
-                        <button class="btn btn-primary"> {{isEditPropertyInspection== false ? "submit" : "update"}}</button>
-                      </div>
-                  </div>
-
-                </form>
-              </div>
-            </div>
-          </div> 
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-bold fs-3">PROPERTY INSPECTIONS</div>
+          <button type="button" class="btn btn-primary" *ngIf="canCreate" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Add Property Inspection
+          </button>
         </div>
 
         <div class="row">
@@ -132,3 +68,67 @@
     </main>
 
 
+
+<ng-template #propertyInspectionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEditPropertyInspection ? 'Edit Property Inspection' : 'Add Property Inspection' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+                <form (ngSubmit)="SavePropertyInspection()">
+
+                  <div class="form-group">
+                    <label for="inspectionCode">Property Inspection Code <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="propertyInspectionCode" name="propertyInspectionCode"
+                    [(ngModel)]="propertyInspectionObj.inspectionCode"  required  placeholder="Enter Property Inspection Code">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inspectionDate">Inspection Date <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="inspectionDate" name="inspectionDate"
+                    [(ngModel)]="propertyInspectionObj.inspectionDate"  required  placeholder="Enter Inspection Date">
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="inspectionType">Inspection Type<span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="inspectionType" name="inspectionType"
+                    [(ngModel)]="propertyInspectionObj.inspectionType"  required  placeholder="Enter Property Inspection Inspection Type">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="conditionNotes">Condition Notes <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="conditionNotes" name="conditionNotes"
+                    [(ngModel)]="propertyInspectionObj.conditionNotes"  required  placeholder="Enter Maintenance Condition Notes">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="damageReported">Damage Reported <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="damageReported" name="damageReported"
+                    [(ngModel)]="propertyInspectionObj.damageReported"  required  placeholder="Enter Property Inspection Damage Reported">
+                  </div>       
+                  
+                  <div class="form-group">
+                    <label for="photosURL"> Photos URL <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="photosURL" name="photosURL"
+                    [(ngModel)]="propertyInspectionObj.photosURL" required  placeholder="Enter Property Inspection Photos URL">
+                  </div>              
+                  
+                  <div class="form-group mt-1">
+                      <label for="stauts">Status <span>*</span></label>
+                      <select class="form-control form-select mt-2" id="stauts" name="stauts" aria-label="Default select example"
+                      (change)="onChangeStatus($event)" required>
+                      <option disabled selected>{{isEditPropertyInspection=== true ? statusValue : "Select Value"}}</option>
+                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
+                      </select>
+                  </div>
+                  
+                      <div class="form-group mt-4" *ngIf="canCreate || (isEditPropertyInspection && canUpdate)">
+                      <div class="text-end ms-auto">
+                        <button class="btn btn-primary"> {{isEditPropertyInspection== false ? "submit" : "update"}}</button>
+                      </div>
+                  </div>
+
+                </form>
+  </div>
+</ng-template>
