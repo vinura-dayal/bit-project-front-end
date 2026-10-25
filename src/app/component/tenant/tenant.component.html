@@ -2,80 +2,11 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12 fw-bold fs-3">
-            TENANT REGISTRATION
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 mb-3">
-            <div class="card text-dark mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Tenant Form</div>
-              <div class="card-body">
-                <form (ngSubmit)="SaveTenant()">
-
-                  <div class="form-group">
-                    <label for="tenantName">Tenant Name <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantName" name="tenantName"
-                    [(ngModel)]="tenantObj.tenantName"  required  placeholder="Enter Tenant Name">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="tenantEmail">Email <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantEmail" name="tenantEmail"
-                    [(ngModel)]="tenantObj.email"  required  placeholder="Enter Tenant Email">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="tenantPhone">Phone <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantPhone" name="tenantPhone"
-                    [(ngModel)]="tenantObj.phone"  required  placeholder="Enter Tenant Phone">
-                  </div>
-
-                  <div class="form-group mt-1">
-                      <label for="tenantNic">NIC <span>*</span></label>
-                      <input type="text" class="form-control mt-2" id="tenantNic" name="tenantNic"
-                      [(ngModel)]="tenantObj.nic"  required  placeholder="Enter Tenant NIC">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="tenantOccupation">Occupation <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantOccupation" name="tenantOccupation"
-                    [(ngModel)]="tenantObj.occupation"  required  placeholder="Enter Tenant Occupation">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="tenantEmergencyContact">Emergency Contact <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantEmergencyContact" name="tenantEmergencyContact"
-                    [(ngModel)]="tenantObj.emergencyContact"  required  placeholder="Enter Tenant EmergencyContact">
-                  </div>
-                  
-                <div class="form-group">
-                    <label for="tenantRegisteredDate">Registered Date <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="tenantRegisteredDate" name="tenantRegisteredDate"
-                    [(ngModel)]="tenantObj.registeredDate"  required  placeholder="Enter Tenant RegisteredDate">
-                  </div>    
-                  
-                  <div class="form-group mt-1">
-                      <label for="tenantStatus">Tenant Status <span>*</span></label>
-                      <select class="form-control form-select mt-2" id="tenantStatus" name="tenantStatus" aria-label="Default select example"
-                      (change)="onChangeStatus($event)" required>
-                      <option disabled selected>{{isEditTenant === true ? statusValue : "Select Value"}}</option>
-                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
-                      </select>
-                  </div>
-                  
-                      <div class="form-group mt-4" *ngIf="canCreate || (isEditTenant && canUpdate)">
-                      <div class="text-end ms-auto">
-                        <button class="btn btn-primary"> {{isEditTenant == false ? "submit" : "update"}}</button>
-                      </div>
-                  </div>
-
-                </form>
-              </div>
-            </div>
-          </div> 
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-bold fs-3">TENANTS</div>
+          <button type="button" class="btn btn-primary" *ngIf="canCreate" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Add Tenant
+          </button>
         </div>
 
         <div class="row">
@@ -136,3 +67,72 @@
     </main>
 
 
+
+<ng-template #tenantModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEditTenant ? 'Edit Tenant' : 'Add Tenant' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+                <form (ngSubmit)="SaveTenant()">
+
+                  <div class="form-group">
+                    <label for="tenantName">Tenant Name <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantName" name="tenantName"
+                    [(ngModel)]="tenantObj.tenantName"  required  placeholder="Enter Tenant Name">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tenantEmail">Email <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantEmail" name="tenantEmail"
+                    [(ngModel)]="tenantObj.email"  required  placeholder="Enter Tenant Email">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tenantPhone">Phone <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantPhone" name="tenantPhone"
+                    [(ngModel)]="tenantObj.phone"  required  placeholder="Enter Tenant Phone">
+                  </div>
+
+                  <div class="form-group mt-1">
+                      <label for="tenantNic">NIC <span>*</span></label>
+                      <input type="text" class="form-control mt-2" id="tenantNic" name="tenantNic"
+                      [(ngModel)]="tenantObj.nic"  required  placeholder="Enter Tenant NIC">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tenantOccupation">Occupation <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantOccupation" name="tenantOccupation"
+                    [(ngModel)]="tenantObj.occupation"  required  placeholder="Enter Tenant Occupation">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="tenantEmergencyContact">Emergency Contact <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantEmergencyContact" name="tenantEmergencyContact"
+                    [(ngModel)]="tenantObj.emergencyContact"  required  placeholder="Enter Tenant EmergencyContact">
+                  </div>
+                  
+                <div class="form-group">
+                    <label for="tenantRegisteredDate">Registered Date <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="tenantRegisteredDate" name="tenantRegisteredDate"
+                    [(ngModel)]="tenantObj.registeredDate"  required  placeholder="Enter Tenant RegisteredDate">
+                  </div>    
+                  
+                  <div class="form-group mt-1">
+                      <label for="tenantStatus">Tenant Status <span>*</span></label>
+                      <select class="form-control form-select mt-2" id="tenantStatus" name="tenantStatus" aria-label="Default select example"
+                      (change)="onChangeStatus($event)" required>
+                      <option disabled selected>{{isEditTenant === true ? statusValue : "Select Value"}}</option>
+                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
+                      </select>
+                  </div>
+                  
+                      <div class="form-group mt-4" *ngIf="canCreate || (isEditTenant && canUpdate)">
+                      <div class="text-end ms-auto">
+                        <button class="btn btn-primary"> {{isEditTenant == false ? "submit" : "update"}}</button>
+                      </div>
+                  </div>
+
+                </form>
+  </div>
+</ng-template>

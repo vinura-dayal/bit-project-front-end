@@ -2,17 +2,81 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12 fw-bold fs-3">
-            PROPERTY REGISTRATION
-          </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-bold fs-3">PROPERTIES</div>
+          <button type="button" class="btn btn-primary" *ngIf="canCreate" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Add Property
+          </button>
         </div>
 
         <div class="row">
+
           <div class="col-lg-12 mb-3">
-            <div class="card text-dark mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Property Form</div>
-              <div class="card-body">
+            <div class="card text-dark  mb-3 h-100">
+              <div class="card-header bg-info fw-bold">Property Table</div>
+              <div class="card-body overflow-auto">
+                <div class="input-group my-3 ">
+                  <input type="text" class="form-control" placeholder="Serach Property" aria-label="Search" aria-describedby="button-addon2">
+                  <button class="btn btn-info" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                </div>
+                <table class="table table-striped table-bordered table-wrapper">
+                  <thead>
+                    <tr>
+                      <th scope="col">Property Code</th>
+                      <th scope="col">Property Title</th>
+                      <th scope="col">Property Address</th>
+                      <th scope="col">Property City</th>
+                      <th scope="col">Property Bed Rooms</th>
+                      <th scope="col">Property Bath Rooms</th>
+                      <th scope="col">Property Floor Area SQFT</th>
+                      <th scope="col">Property Monthly Rent</th>
+                      <th scope="col">Property Security Deposit</th>
+                      <th scope="col">Property Description</th>
+                      <th scope="col">Property Status</th>
+                      <th scope="col">Modify</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let propertyObj of propertys">
+                      <td>{{propertyObj.propertyCode || propertyObj.id}}</td>
+                      <td>{{propertyObj.propertyCode}}</td>
+                      <td>{{propertyObj.propertyTitle}}</td>
+                      <td>{{propertyObj.address}}</td>
+                      <td>{{propertyObj.city}}</td>
+                      <td>{{propertyObj.bedrooms}}</td>
+                      <td>{{propertyObj.bathrooms}}</td>
+                      <td>{{propertyObj.floorAreraSqft}}</td>
+                      <td>{{propertyObj.securityDeposit}}</td>
+                      <td>{{propertyObj.description}}</td>
+                      <td>{{propertyObj.status?.name}}</td>
+                      <td class="text-center">
+                        <button class="btn btn-warning me-1" *ngIf="canUpdate"
+                                (click)="GetPropertyById(propertyObj.id)"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-danger me-1" *ngIf="canDelete"
+                                (click)="DeleteById(propertyObj.id)"><i class="bi bi-archive"></i></button>
+                      </td>
+                        
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div> 
+
+         
+        </div>
+
+      </div>
+    </main>
+
+
+
+<ng-template #propertyModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEditProperty ? 'Edit Property' : 'Add Property' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
                 <form (ngSubmit)="SaveProperty()">
 
                   <div class="form-group">
@@ -91,69 +155,5 @@
                   </div>
 
                 </form>
-              </div>
-            </div>
-          </div> 
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-12 mb-3">
-            <div class="card text-dark  mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Property Table</div>
-              <div class="card-body overflow-auto">
-                <div class="input-group my-3 ">
-                  <input type="text" class="form-control" placeholder="Serach Property" aria-label="Search" aria-describedby="button-addon2">
-                  <button class="btn btn-info" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-                </div>
-                <table class="table table-striped table-bordered table-wrapper">
-                  <thead>
-                    <tr>
-                      <th scope="col">Property Code</th>
-                      <th scope="col">Property Title</th>
-                      <th scope="col">Property Address</th>
-                      <th scope="col">Property City</th>
-                      <th scope="col">Property Bed Rooms</th>
-                      <th scope="col">Property Bath Rooms</th>
-                      <th scope="col">Property Floor Area SQFT</th>
-                      <th scope="col">Property Monthly Rent</th>
-                      <th scope="col">Property Security Deposit</th>
-                      <th scope="col">Property Description</th>
-                      <th scope="col">Property Status</th>
-                      <th scope="col">Modify</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let propertyObj of propertys">
-                      <td>{{propertyObj.propertyCode || propertyObj.id}}</td>
-                      <td>{{propertyObj.propertyCode}}</td>
-                      <td>{{propertyObj.propertyTitle}}</td>
-                      <td>{{propertyObj.address}}</td>
-                      <td>{{propertyObj.city}}</td>
-                      <td>{{propertyObj.bedrooms}}</td>
-                      <td>{{propertyObj.bathrooms}}</td>
-                      <td>{{propertyObj.floorAreraSqft}}</td>
-                      <td>{{propertyObj.securityDeposit}}</td>
-                      <td>{{propertyObj.description}}</td>
-                      <td>{{propertyObj.status?.name}}</td>
-                      <td class="text-center">
-                        <button class="btn btn-warning me-1" *ngIf="canUpdate"
-                                (click)="GetPropertyById(propertyObj.id)"><i class="bi bi-pencil-square"></i></button>
-                        <button class="btn btn-danger me-1" *ngIf="canDelete"
-                                (click)="DeleteById(propertyObj.id)"><i class="bi bi-archive"></i></button>
-                      </td>
-                        
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div> 
-
-         
-        </div>
-
-      </div>
-    </main>
-
-
+  </div>
+</ng-template>

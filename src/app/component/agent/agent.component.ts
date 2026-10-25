@@ -5,6 +5,9 @@ import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import {TemplateRef, ViewChild } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-agent',
@@ -12,6 +15,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./agent.component.scss']
 })
 export class AgentComponent {
+
+  @ViewChild('agentModal') agentModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   agentObj:AgentRepresentation = {};
   agents: Array<any> = [];
@@ -30,7 +36,9 @@ export class AgentComponent {
     private agentService:AgentService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +66,7 @@ SaveAgent():void{
           this.agentService.createAgent(this.agentObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllAgents();  
             }
           });
@@ -71,6 +80,7 @@ SaveAgent():void{
       this.agentService.createAgent(this.agentObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllAgents();  
             }
           });
@@ -89,6 +99,7 @@ GetAgentById(ID:any){
   this.isEditAgent = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.agentObj.status = allData.data.dataList[0].status.id;
+    this.modalRef = this.modalService.open(this.agentModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -127,7 +138,13 @@ GetAllStatus(){
 
 onChangeStatus(E:any){
   this.agentObj.status = E.target.value;
-  
 }
+
+  openAddModal(): void{
+  this.agentObj = {};
+  this.isEditAgent = false;
+  this.modalRef = this.modalService.open(this.agentModal, { centered: true, backdrop: 'static' });
+}
+
 
 }

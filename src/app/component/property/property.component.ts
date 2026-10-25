@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { PropertyRepresentation } from '../services/api/module/property-representation';
 import { PropertyService } from '../services/api/property/property.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-property',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./property.component.scss']
 })
 export class PropertyComponent {
+
+  @ViewChild('propertyModal') propertyModal!: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   propertyObj:PropertyRepresentation = {};
   propertys: Array<any> = [];
@@ -30,7 +35,9 @@ export class PropertyComponent {
     private propertyService:PropertyService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
   ){}
 
   ngOnInit(): void {
@@ -58,6 +65,7 @@ SaveProperty():void{
           this.propertyService.createProperty(this.propertyObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllPropertys();  
             }
           });
@@ -71,6 +79,7 @@ SaveProperty():void{
       this.propertyService.createProperty(this.propertyObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllPropertys();  
             }
           });
@@ -89,6 +98,7 @@ GetPropertyById(ID:any){
   this.isEditProperty = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.propertyObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.propertyModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +138,13 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.propertyObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.propertyObj = {};
+  this.isEditProperty = false;
+  this.modalRef = this.modalService.open(this.propertyModal, { centered: true, backdrop: 'static' });
 }
 
 }

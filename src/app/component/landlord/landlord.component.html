@@ -2,74 +2,11 @@
     <main class="mt-5 pt-3">
       <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12 fw-bold fs-3">
-            LANDLORD REGISTRATION
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 mb-3">
-            <div class="card text-dark mb-3 h-100">
-              <div class="card-header bg-info fw-bold">Landlord Form</div>
-              <div class="card-body">
-                <form (ngSubmit)="SaveLandlord()">
-
-                  <div class="form-group">
-                    <label for="landlordName">Landlord Name <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="landlordName" name="landlordName"
-                    [(ngModel)]="landlordObj.landlordName"  required  placeholder="Enter Landlord Name">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="landlordEmail">Email <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="landlordEmail" name="landlordEmail"
-                    [(ngModel)]="landlordObj.email"  required  placeholder="Enter Landlord Email">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="landlordPhone">Phone <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="landlordPhone" name="landlordPhone"
-                    [(ngModel)]="landlordObj.phone"  required  placeholder="Enter Landlord Phone">
-                  </div>
-
-                  <div class="form-group mt-1">
-                      <label for="landlordNic">NIC <span>*</span></label>
-                      <input type="text" class="form-control mt-2" id="landlordNic" name="landlordNic"
-                      [(ngModel)]="landlordObj.nic"  required  placeholder="Enter Landlord NIC">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="landlordAddress">Address <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="landlordAddress" name="landlordAddress"
-                    [(ngModel)]="landlordObj.address"  required  placeholder="Enter Landlord Address">
-                  </div>
-
-                  <div class="form-group">
-                    <label for="landlordBankAccount">BankAccount <span>*</span></label>
-                    <input type="text" class="form-control mt-2" id="landlordBankAccount" name="landlordBankAccount"
-                    [(ngModel)]="landlordObj.bankAccount"  required  placeholder="Enter Landlord BankAccount">
-                  </div>                
-                  
-                  <div class="form-group mt-1">
-                      <label for="landlordStatus">Landlord Status <span>*</span></label>
-                      <select class="form-control form-select mt-2" id="landlordStatus" name="landlordStatus" aria-label="Default select example"
-                      (change)="onChangeStatus($event)" required>
-                      <option disabled selected>{{isEditLandlord === true ? statusValue : "Select Value"}}</option>
-                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
-                      </select>
-                  </div>
-                  
-                      <div class="form-group mt-4" *ngIf="canCreate || (isEditLandlord && canUpdate)">
-                      <div class="text-end ms-auto">
-                        <button class="btn btn-primary"> {{isEditLandlord == false ? "submit" : "update"}}</button>
-                      </div>
-                  </div>
-
-                </form>
-              </div>
-            </div>
-          </div> 
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-bold fs-3">LANDLORDS</div>
+          <button type="button" class="btn btn-primary" *ngIf="canCreate" (click)="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Add Landlord
+          </button>
         </div>
 
         <div class="row">
@@ -128,3 +65,66 @@
     </main>
 
 
+
+<ng-template #landlordModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ isEditLandlord ? 'Edit Landlord' : 'Add Landlord' }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+                <form (ngSubmit)="SaveLandlord()">
+
+                  <div class="form-group">
+                    <label for="landlordName">Landlord Name <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="landlordName" name="landlordName"
+                    [(ngModel)]="landlordObj.landlordName"  required  placeholder="Enter Landlord Name">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="landlordEmail">Email <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="landlordEmail" name="landlordEmail"
+                    [(ngModel)]="landlordObj.email"  required  placeholder="Enter Landlord Email">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="landlordPhone">Phone <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="landlordPhone" name="landlordPhone"
+                    [(ngModel)]="landlordObj.phone"  required  placeholder="Enter Landlord Phone">
+                  </div>
+
+                  <div class="form-group mt-1">
+                      <label for="landlordNic">NIC <span>*</span></label>
+                      <input type="text" class="form-control mt-2" id="landlordNic" name="landlordNic"
+                      [(ngModel)]="landlordObj.nic"  required  placeholder="Enter Landlord NIC">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="landlordAddress">Address <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="landlordAddress" name="landlordAddress"
+                    [(ngModel)]="landlordObj.address"  required  placeholder="Enter Landlord Address">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="landlordBankAccount">BankAccount <span>*</span></label>
+                    <input type="text" class="form-control mt-2" id="landlordBankAccount" name="landlordBankAccount"
+                    [(ngModel)]="landlordObj.bankAccount"  required  placeholder="Enter Landlord BankAccount">
+                  </div>                
+                  
+                  <div class="form-group mt-1">
+                      <label for="landlordStatus">Landlord Status <span>*</span></label>
+                      <select class="form-control form-select mt-2" id="landlordStatus" name="landlordStatus" aria-label="Default select example"
+                      (change)="onChangeStatus($event)" required>
+                      <option disabled selected>{{isEditLandlord === true ? statusValue : "Select Value"}}</option>
+                      <option  *ngFor="let status of allStatus" [value]="status.id">{{status.name}}</option>
+                      </select>
+                  </div>
+                  
+                      <div class="form-group mt-4" *ngIf="canCreate || (isEditLandlord && canUpdate)">
+                      <div class="text-end ms-auto">
+                        <button class="btn btn-primary"> {{isEditLandlord == false ? "submit" : "update"}}</button>
+                      </div>
+                  </div>
+
+                </form>
+  </div>
+</ng-template>

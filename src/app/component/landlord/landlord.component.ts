@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { LandlordRepresentation } from '../services/api/module/landlord-representation';
 import { LandlordService } from '../services/api/landlord/landlord.service';
 import { StatusService } from '../services/api/status/status.service';
 import { FormBuilder } from '@angular/forms';
 import swal from 'sweetalert';
 import { AuthIds, PermissionHelperService } from '../services/permission-helper.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-landlord',
@@ -12,6 +14,9 @@ import { AuthIds, PermissionHelperService } from '../services/permission-helper.
   styleUrls: ['./landlord.component.scss']
 })
 export class LandlordComponent {
+
+  @ViewChild('landlordModal') landlordModal: TemplateRef<any>;
+  private modalRef?: NgbModalRef;
 
   landlordObj:LandlordRepresentation = {};
   landlords: Array<any> = [];
@@ -30,7 +35,10 @@ export class LandlordComponent {
     private landlordService:LandlordService,
     private statusService:StatusService,
     private permissionHelper: PermissionHelperService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private modalService: NgbModal,
+    private toast: ToastService
+
   ){}
 
   ngOnInit(): void {
@@ -58,6 +66,7 @@ SaveLandlord():void{
           this.landlordService.createLandlord(this.landlordObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllLandlords();  
             }
           });
@@ -71,6 +80,7 @@ SaveLandlord():void{
       this.landlordService.createLandlord(this.landlordObj,this.type)
           .subscribe({
             next:(result):void=>{
+              this.modalRef?.close();
               this.GetAllLandlords();  
             }
           });
@@ -89,6 +99,7 @@ GetLandlordById(ID:any){
   this.isEditLandlord = true;
   this.statusValue=allData.data.dataList[0].status.name;
   this.landlordObj.status = allData.data.dataList[0].status.id;
+  this.modalRef = this.modalService.open(this.landlordModal, { centered: true, backdrop: 'static' });
   
 })
 }
@@ -128,6 +139,14 @@ GetAllStatus(){
 onChangeStatus(E:any){
   this.landlordObj.status = E.target.value;
   
+}
+
+
+openAddModal(): void{
+  this.landlordObj = {};
+  this.isEditLandlord = false;
+  this.modalRef = this.modalService.open(this.landlordModal, { centered: true, backdrop: 'static' });
+
 }
 
 }
