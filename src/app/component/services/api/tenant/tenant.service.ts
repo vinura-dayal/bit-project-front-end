@@ -23,8 +23,16 @@ export class TenantService {
         
   }
 
-  GetAllTenants():Observable<any>{
-    return this.http.get(this.baseUrl);
+  GetAllTenants(page?: number, size?: number):Observable<any>{
+    if (page === undefined || size === undefined) {
+      return this.http.get(this.baseUrl);
+    }
+    return this.http.get(this.baseUrl, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      }
+    });
   }
 
   GetTenantsById(ID:any):Observable<any>{
