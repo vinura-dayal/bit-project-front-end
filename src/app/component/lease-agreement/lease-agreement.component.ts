@@ -31,6 +31,12 @@ export class LeaseAgreementComponent {
   canUpdate = false;
   canDelete = false;
 
+  page = 0;
+  pageSize = 5;
+  totalPages = 0;
+  totalElements = 0;
+  pageSizeOptions = [5, 10, 20];
+
   constructor(
     private leaseagreementService:LeaseAgreementService,
     private statusService:StatusService,
@@ -66,7 +72,8 @@ SaveLeaseAgreement():void{
           .subscribe({
             next:(result):void=>{
               this.modalRef?.close();
-              this.GetAllLeaseAgreements();  
+              this.page = 0;
+              this.GetAllLeaseAgreements();
             }
           });
           swal("Sucessfull!", "LeaseAgreement has been Adedd!", "success");
@@ -104,9 +111,38 @@ GetLeaseAgreementById(ID:any){
 }
 
 GetAllLeaseAgreements(){
-  this.leaseagreementService.GetAllLeaseAgreements().subscribe(allData=>{
-    this.leaseagreements = allData?.data?.dataList || [];
+  this.leaseagreementService.GetAllLeaseAgreements(this.page, this.pageSize).subscribe(allData=>{
+    const list = allData?.data?.dataList || [];
+    const totalPages = allData?.data?.totalPages || 0;
+    if (list.length === 0 && this.page > 0 && this.page >= totalPages) {
+      this.page = Math.max(totalPages - 1, 0);
+      this.GetAllLeaseAgreements();
+      return;
+    }
+    this.leaseagreements = list;
+    this.page = allData?.data?.page ?? this.page;
+    this.totalPages = totalPages;
+    this.totalElements = allData?.data?.totalElements || 0;
   })
+}
+
+goToPage(nextPage: number): void {
+  if (nextPage < 0 || nextPage >= this.totalPages || nextPage === this.page) {
+    return;
+  }
+  this.page = nextPage;
+  this.GetAllLeaseAgreements();
+}
+
+changePageSize(event: Event): void {
+  const value = Number((event.target as HTMLSelectElement).value);
+  this.pageSize = value;
+  this.page = 0;
+  this.GetAllLeaseAgreements();
+}
+
+get pageNumbers(): number[] {
+  return Array.from({ length: this.totalPages }, (_, index) => index);
 }
 
 DeleteById(ID:any){
