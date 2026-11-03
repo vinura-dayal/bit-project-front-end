@@ -23,8 +23,16 @@ export class UtilityBillService {
         
   }
 
-  GetAllUtilityBills():Observable<any>{
-    return this.http.get(this.baseUrl);
+  GetAllUtilityBills(page?: number, size?: number):Observable<any>{
+    if (page === undefined || size === undefined) {
+      return this.http.get(this.baseUrl);
+    }
+    return this.http.get(this.baseUrl, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      }
+    });
   }
 
   GetUtilityBillsById(ID:any):Observable<any>{

@@ -23,8 +23,16 @@ export class PropertyInspectionService {
         
   }
 
-  GetAllPropertyInspections():Observable<any>{
-    return this.http.get(this.baseUrl);
+  GetAllPropertyInspections(page?: number, size?: number):Observable<any>{
+    if (page === undefined || size === undefined) {
+      return this.http.get(this.baseUrl);
+    }
+    return this.http.get(this.baseUrl, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      }
+    });
   }
 
   GetPropertyInspectionsById(ID:any):Observable<any>{

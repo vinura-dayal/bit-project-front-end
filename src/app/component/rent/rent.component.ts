@@ -31,6 +31,12 @@ export class RentComponent {
   canUpdate = false;
   canDelete = false;
 
+  page = 0;
+  pageSize = 5;
+  totalPages = 0;
+  totalElements = 0;
+  pageSizeOptions = [5, 10, 20];
+
   constructor(
     private rentService:RentService,
     private statusService:StatusService,
@@ -66,7 +72,8 @@ SaveRent():void{
           .subscribe({
             next:(result):void=>{
               this.modalRef?.close();
-              this.GetAllRents();  
+              this.page = 0;
+              this.GetAllRents();
             }
           });
           swal("Sucessfull!", "Rent has been Adedd!", "success");
@@ -104,9 +111,38 @@ GetRentById(ID:any){
 }
 
 GetAllRents(){
-  this.rentService.GetAllRents().subscribe(allData=>{
-    this.rents = allData?.data?.dataList || [];
+  this.rentService.GetAllRents(this.page, this.pageSize).subscribe(allData=>{
+    const list = allData?.data?.dataList || [];
+    const totalPages = allData?.data?.totalPages || 0;
+    if (list.length === 0 && this.page > 0 && this.page >= totalPages) {
+      this.page = Math.max(totalPages - 1, 0);
+      this.GetAllRents();
+      return;
+    }
+    this.rents = list;
+    this.page = allData?.data?.page ?? this.page;
+    this.totalPages = totalPages;
+    this.totalElements = allData?.data?.totalElements || 0;
   })
+}
+
+goToPage(nextPage: number): void {
+  if (nextPage < 0 || nextPage >= this.totalPages || nextPage === this.page) {
+    return;
+  }
+  this.page = nextPage;
+  this.GetAllRents();
+}
+
+changePageSize(event: Event): void {
+  const value = Number((event.target as HTMLSelectElement).value);
+  this.pageSize = value;
+  this.page = 0;
+  this.GetAllRents();
+}
+
+get pageNumbers(): number[] {
+  return Array.from({ length: this.totalPages }, (_, index) => index);
 }
 
 DeleteById(ID:any){

@@ -31,6 +31,12 @@ export class LandlordComponent {
   canUpdate = false;
   canDelete = false;
 
+  page = 0;
+  pageSize = 5;
+  totalPages = 0;
+  totalElements = 0;
+  pageSizeOptions = [5, 10, 20];
+
   constructor(
     private landlordService:LandlordService,
     private statusService:StatusService,
@@ -67,7 +73,8 @@ SaveLandlord():void{
           .subscribe({
             next:(result):void=>{
               this.modalRef?.close();
-              this.GetAllLandlords();  
+              this.page = 0;
+              this.GetAllLandlords();
             }
           });
           swal("Sucessfull!", "Landlord has been Adedd!", "success");
@@ -105,9 +112,38 @@ GetLandlordById(ID:any){
 }
 
 GetAllLandlords(){
-  this.landlordService.GetAllLandlords().subscribe(allData=>{
-    this.landlords = allData?.data?.dataList || [];
+  this.landlordService.GetAllLandlords(this.page, this.pageSize).subscribe(allData=>{
+    const list = allData?.data?.dataList || [];
+    const totalPages = allData?.data?.totalPages || 0;
+    if (list.length === 0 && this.page > 0 && this.page >= totalPages) {
+      this.page = Math.max(totalPages - 1, 0);
+      this.GetAllLandlords();
+      return;
+    }
+    this.landlords = list;
+    this.page = allData?.data?.page ?? this.page;
+    this.totalPages = totalPages;
+    this.totalElements = allData?.data?.totalElements || 0;
   })
+}
+
+goToPage(nextPage: number): void {
+  if (nextPage < 0 || nextPage >= this.totalPages || nextPage === this.page) {
+    return;
+  }
+  this.page = nextPage;
+  this.GetAllLandlords();
+}
+
+changePageSize(event: Event): void {
+  const value = Number((event.target as HTMLSelectElement).value);
+  this.pageSize = value;
+  this.page = 0;
+  this.GetAllLandlords();
+}
+
+get pageNumbers(): number[] {
+  return Array.from({ length: this.totalPages }, (_, index) => index);
 }
 
 DeleteById(ID:any){

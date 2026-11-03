@@ -23,8 +23,16 @@ export class LandlordService {
         
   }
 
-  GetAllLandlords():Observable<any>{
-    return this.http.get(this.baseUrl);
+  GetAllLandlords(page?: number, size?: number):Observable<any>{
+    if (page === undefined || size === undefined) {
+      return this.http.get(this.baseUrl);
+    }
+    return this.http.get(this.baseUrl, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      }
+    });
   }
 
   GetLandlordsById(ID:any):Observable<any>{

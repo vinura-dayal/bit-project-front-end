@@ -23,8 +23,16 @@ export class MaintenanceRequestService {
         
   }
 
-  GetAllMaintenanceRequests():Observable<any>{
-    return this.http.get(this.baseUrl);
+  GetAllMaintenanceRequests(page?: number, size?: number):Observable<any>{
+    if (page === undefined || size === undefined) {
+      return this.http.get(this.baseUrl);
+    }
+    return this.http.get(this.baseUrl, {
+      params: {
+        page: page.toString(),
+        size: size.toString()
+      }
+    });
   }
 
   GetMaintenanceRequestsById(ID:any):Observable<any>{
